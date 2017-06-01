@@ -76,6 +76,19 @@ d=$(echo -e $interceptions $attempts | awk -v interceptions=$interceptions -v at
 
 # Calculate the passer rating then printing the output to STDOUT.
 output=$(echo $a $b $c $d | awk -v a=$a -v b=$b -v c=$c -v d=$d '{ printf("%3.1f",((a + b + c + d) / 6 * 100 )) }')
-echo -e "The Quarterback Passer Rating is:\t\t$output"
-echo -e "********Any rating above 158.3 is considered a Perfect Rating and rated as 158.3********"
+
+# Dealing with bash's inability to handle floating points by splitting the output at the decimal.
+rating1=$(echo $output | cut -d '.' -f 1)
+rating2=$(echo $output | cut -d '.' -f 2)
+
+# Any rating below 0.0 is recorded as 0.0.
+if [[ $output =~ "-" ]] ; then
+	echo -e "The Quarterback Passer Rating is:\t\t0.0"
+fi
+# Any rating above 158.3 is considered perfect and is recorded as 158.3.
+if [[ $rating1 -gt 158 && $rating2 -gt 3 ]] ; then
+	echo -e "The Quarterback Passer Rating is:\t\t158.3"
+else
+	echo -e "The Quarterback Passer Rating is:\t\t$output"
+fi
 exit 0
