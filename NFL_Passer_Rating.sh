@@ -62,8 +62,8 @@ fi
 a=$(echo -e $completions $attempts | awk -v completions=$completions -v attempts=$attempts '{ print (((completions / attempts) - 0.3 ) * 5 ) }')
 
 # Added the completion percentage just for fun
-completepercentage=$(echo -e $completions $attempts | awk -v completions=$completions -v attempts=$attempts '{ print (completions / attempts) }')
-echo -e "Completion Percentage is:\t\t\t$completepercentage"
+completepercentage=$(echo -e $completions $attempts | awk -v completions=$completions -v attempts=$attempts '{ printf("%3.1f",(completions / attempts) * 100 ) }')
+echo -e "Completion Percentage is:\t\t\t$completepercentage%"
 
 # Part b
 b=$(echo -e $yards $attempts | awk -v yards=$yards -v attempts=$attempts '{ print ((yards/attempts - 3) * 0.25) }')
@@ -75,6 +75,7 @@ c=$(echo -e $touchdowns $attempts | awk -v touchdowns=$touchdowns -v attempts=$a
 d=$(echo -e $interceptions $attempts | awk -v interceptions=$interceptions -v attempts=$attempts '{ print 2.375 - ( interceptions / attempts * 25 ) }')
 
 # Calculate the passer rating then printing the output to STDOUT.
-output=$(echo $a $b $c $d | awk -v a=$a -v b=$b -v c=$c -v d=$d '{ print ((a + b + c + d) / 6 * 100 ) }')
-echo -e "The Quarterback Rating is:\t\t\t$output"
+output=$(echo $a $b $c $d | awk -v a=$a -v b=$b -v c=$c -v d=$d '{ printf("%3.1f",((a + b + c + d) / 6 * 100 )) }')
+echo -e "The Quarterback Passer Rating is:\t\t$output"
+echo -e "********Any rating above 158.3 is considered a Perfect Rating and rated as 158.3********"
 exit 0
